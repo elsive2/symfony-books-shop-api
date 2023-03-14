@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
      * )
      */
     #[Route('/categories', name: 'category_index', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function indexAction(): JsonResponse
     {
         $categories = $this->categoryService->getCategories();
 

@@ -1,19 +1,20 @@
 <?php
 
 namespace App\Tests\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CategoryControllerTest extends WebTestCase
+class BookControllerTest extends WebTestCase
 {
-    public function testIndexAction(): void
+    public function testBookByCategoryAction(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/api/v1/categories');
+        $client->request('GET', '/api/v1/category/7/books');
         $responseContent = $client->getResponse()->getContent();
 
         $this->assertResponseIsSuccessful();
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__ . '/responses/CategoryControllerTest_testIndexAction.json',
+            __DIR__ . '/responses/BookControllerTest_bookByCategoryAction.json',
             $responseContent
         );
     }

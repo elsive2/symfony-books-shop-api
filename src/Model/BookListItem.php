@@ -12,6 +12,9 @@ class BookListItem
     
     private string $image;
     
+    /**
+     * @var string[]
+     */
     private array $authors;
     
     private bool $meap;
