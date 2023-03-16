@@ -26,7 +26,7 @@ class CategoryService
      */
     public function getCategories()
     {
-        $categories = $this->categoryRepository->findBy([], ['title' => Criteria::ASC]);
+        $categories = $this->categoryRepository->findAllSortedByTitle();
 
         $items = array_map(
             fn (Category $category) => new CategoryListItem(

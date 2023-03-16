@@ -19,8 +19,7 @@ class CategoryServiceTest extends AbstractTestCase
 
         $repository = $this->createMock(CategoryRepository::class);
         $repository->expects($this->once())
-            ->method('findBy')
-            ->with([], ['title' => Criteria::ASC])
+            ->method('findAllSortedByTitle')
             ->willReturn([$category]);
 
         $service = new CategoryService($repository);
