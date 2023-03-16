@@ -7,18 +7,21 @@ use App\Model\CategoryListItem;
 use App\Model\CategoryListResponse;
 use App\Repository\CategoryRepository;
 use App\Service\CategoryService;
+use App\Tests\AbstractTestCase;
 use Doctrine\Common\Collections\Criteria;
-use PHPUnit\Framework\TestCase;
 
-class CategoryServiceTest extends TestCase
+class CategoryServiceTest extends AbstractTestCase
 {
     public function testGetCategories()
     {
+        $category = (new Category())->setTitle('Test')->setSlug('test');
+        $this->setEntityId($category, 7);
+
         $repository = $this->createMock(CategoryRepository::class);
         $repository->expects($this->once())
             ->method('findBy')
             ->with([], ['title' => Criteria::ASC])
-            ->willReturn([(new Category())->setId(7)->setTitle('Test')->setSlug('test')]);
+            ->willReturn([$category]);
 
         $service = new CategoryService($repository);
         $expected = new CategoryListResponse([new CategoryListItem(7, 'Test', 'test')]);

@@ -9,10 +9,10 @@ use App\Model\BookListResponse;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
 use App\Service\BookService;
-use PHPUnit\Framework\TestCase;
 use App\Entity\Category;
+use App\Tests\AbstractTestCase;
 
-class BookServiceTest extends TestCase
+class BookServiceTest extends AbstractTestCase
 {
     public function testGetBooksByCategoryNotFound(): void
     {
@@ -53,8 +53,7 @@ class BookServiceTest extends TestCase
 
     private function createBookEntity()
     {
-        return (new Book)
-            ->setId(130)
+        $book = (new Book)
             ->setTitle('Test')
             ->setSlug('test')
             ->setMeap(false)
@@ -62,6 +61,9 @@ class BookServiceTest extends TestCase
             ->setImage('image.jpg')
             ->setPublicationDate(new \DateTime('2005-04-21'))
             ->addCategory(new Category);
+
+        $this->setEntityId($book, 130);
+        return $book;
     }
 
     private function createBookItemModel(): BookListItem
