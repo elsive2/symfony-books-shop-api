@@ -4,7 +4,10 @@ namespace App\Service\ExceptionHandler;
 
 class ExceptionMappingResolver
 {
-    private array $mappings;
+    /**
+     * @var ExceptionMapping[]
+     */
+    private array $mappings = [];
 
     public function __construct(array $mappings)
     {
@@ -17,7 +20,7 @@ class ExceptionMappingResolver
                 $class, 
                 $mapping['code'], 
                 $mapping['hidden'] ?? true, 
-                $mapping['loggalbe'] ?? false
+                $mapping['loggable'] ?? false
             );
         }
     }
