@@ -1,20 +1,44 @@
 <?php
 
 namespace App\Tests\Controller;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CategoryControllerTest extends WebTestCase
+use App\Entity\Category;
+use App\Tests\AbstractControllerTest;
+
+class CategoryControllerTest extends AbstractControllerTest
 {
     public function testIndexAction(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/api/v1/categories');
-        $responseContent = $client->getResponse()->getContent();
+        $this->em->persist((new Category)->setTitle('Devices')->setSlug('devices'));
+        $this->em->flush();
+
+        $this->client->request('GET', '/api/v1/categories');
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertResponseIsSuccessful();
-        $this->assertJsonStringEqualsJsonFile(
-            __DIR__ . '/responses/CategoryControllerTest_testIndexAction.json',
-            $responseContent
-        );
+        $this->assertJsonDocumentMatchesSchema($responseContent, [
+            'type' => 'object',
+            'required' => ['items'],
+            'properties' => [
+                'items' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'required' => ['id', 'title', 'slug'],
+                        'properties' => [
+                            'title' => [
+                                'type' => 'string'
+                            ],
+                            'slug' => [
+                                'type' => 'string'
+                            ],
+                            'id' => [
+                                'type' => 'integer'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
     }
 }
