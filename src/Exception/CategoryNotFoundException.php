@@ -9,6 +9,6 @@ class CategoryNotFoundException extends RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('category not found', Response::HTTP_NOT_FOUND, null);
+        parent::__construct('category not found');
     }
 }
