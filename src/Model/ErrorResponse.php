@@ -6,7 +6,8 @@ class ErrorResponse
 {
     public function __construct(
         private string $message,
-        private int $code
+        private int $code,
+        private mixed $details = null
     ) { }
 
     /**
@@ -23,5 +24,13 @@ class ErrorResponse
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * @param mixed
+     */
+    public function getDetails()
+    {
+        return $this->details;
     }
 }
