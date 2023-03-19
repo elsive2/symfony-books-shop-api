@@ -48,6 +48,15 @@ class CategoryRepository extends ServiceEntityRepository
         return $this->findBy([], ['title' => Criteria::ASC]);
     }
 
+    /**
+     * @param int $id
+     * @return boolean
+     */
+    public function existsById(int $id)
+    {
+        return null !== $this->find($id);
+    }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
