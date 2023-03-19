@@ -2,6 +2,12 @@
 
 namespace App\Model;
 
+use OpenApi\Annotations\Property;
+use OpenApi\Annotations\Schema;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Model\ErrorDebugDetails;
+use App\Model\ErrorValidationDetails;
+
 class ErrorResponse
 {
     public function __construct(
@@ -19,7 +25,7 @@ class ErrorResponse
     }
 
     /**
-     * @param int
+     * @return int
      */
     public function getCode()
     {
@@ -27,7 +33,11 @@ class ErrorResponse
     }
 
     /**
-     * @param mixed
+     * @Property(type="object", oneOf={
+     *  @Schema(ref=@Model(type=ErrorDebugDetails::class)),
+     *  @Schema(ref=@Model(type=ErrorValidationDetails::class))
+     * })
+     * @return mixed
      */
     public function getDetails()
     {

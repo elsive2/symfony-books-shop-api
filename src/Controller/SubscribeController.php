@@ -15,7 +15,7 @@ class SubscribeController extends AbstractController
     public function __construct(
         private SubscriberService $subscriberService
     ) { }
-
+    
     #[Route('/subscribe', name: 'app_subscribe', methods: ['POST'])]
     public function index(#[RequestBody] SubscriberRequest $request): Response
     {

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Model\ErrorResponse;
 
 #[Route('/api/v1')]
 class CategoryController extends AbstractController
@@ -22,6 +23,11 @@ class CategoryController extends AbstractController
      *  response=200,
      *  description="Return book categories",
      *  @Model(type=CategoryListResponse::class)
+     * )
+     * @Response(
+     *  response=400,
+     *  description="Validation failed",
+     *  @Model(type=ErrorResponse::class)
      * )
      */
     #[Route('/categories', name: 'category_index', methods: ['GET'])]
