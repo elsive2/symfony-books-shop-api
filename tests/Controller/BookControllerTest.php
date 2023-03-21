@@ -70,7 +70,9 @@ class BookControllerTest extends AbstractControllerTest
             ->setPublicationDate(new \DateTimeImmutable)
             ->setAuthors(['Tester'])
             ->addCategory($category)
-            ->setSlug('test-book'));
+            ->setSlug('test-book')
+            ->setIsbn('123456789')
+            ->setDescription('Some test description'));
 
         $this->em->flush();
 

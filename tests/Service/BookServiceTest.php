@@ -10,6 +10,7 @@ use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
 use App\Service\BookService;
 use App\Entity\Category;
+use App\Repository\ReviewRepository;
 use App\Tests\AbstractTestCase;
 
 class BookServiceTest extends AbstractTestCase
@@ -24,9 +25,11 @@ class BookServiceTest extends AbstractTestCase
             ->with(130)
             ->willReturn(false);
 
+        $reviewRepository = $this->createMock(ReviewRepository::class);
+
         $this->expectException(CategoryNotFoundException::class);
 
-        (new BookService($categoryRepository, $bookRepository))
+        (new BookService($categoryRepository, $bookRepository, $reviewRepository))
             ->getBooksByCategoryId(130); 
     }
 
@@ -44,7 +47,9 @@ class BookServiceTest extends AbstractTestCase
             ->with(130)
             ->willReturn(true);
 
-        $service = new BookService($categoryRepository, $bookRepository);
+        $reviewRepository = $this->createMock(ReviewRepository::class);
+
+        $service = new BookService($categoryRepository, $bookRepository, $reviewRepository);
         $actual = $service->getBooksByCategoryId(130);
         $expected = new BookListResponse([$this->createBookItemModel()]);
 
@@ -60,6 +65,8 @@ class BookServiceTest extends AbstractTestCase
             ->setAuthors(['Some author'])
             ->setImage('image.jpg')
             ->setPublicationDate(new \DateTimeImmutable('2005-04-21'))
+            ->setDescription('Test description')
+            ->setIsbn('12345678910')
             ->addCategory(new Category);
 
         $this->setEntityId($book, 130);

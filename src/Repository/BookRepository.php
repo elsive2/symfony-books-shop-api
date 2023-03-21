@@ -52,6 +52,10 @@ class BookRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @param int $id
+     * @return Book
+     */
     public function getById(int $id): Book
     {
         $book = $this->find($id);
@@ -61,28 +65,12 @@ class BookRepository extends ServiceEntityRepository
         return $book;
     }
 
-//    /**
-//     * @return Book[] Returns an array of Book objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Book
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function existsById(int $id): bool
+    {
+        return null !== $this->find($id);
+    }
 }

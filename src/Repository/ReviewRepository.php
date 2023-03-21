@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Review;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -52,5 +53,17 @@ class ReviewRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function getPageByBookId(int $id, int $offset, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->where('r.book = :id')
+            ->setParameter('id', $id)
+            ->orderBy('r.publicationDate', 'desc')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        return new Paginator($query, false);
     }
 }
