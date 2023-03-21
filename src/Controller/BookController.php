@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\BookDetails;
 use App\Service\BookService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,5 +36,23 @@ class BookController extends AbstractController
     public function bookByCategoryAction(int $id): JsonResponse
     {
         return $this->json($this->bookService->getBooksByCategoryId($id));
+    }
+
+    /**
+     * @Response(
+     *  response=200,
+     *  description="Get book id",
+     *  @Model(type=BookDetails::class)
+     * )
+     * @Response(
+     *  response=404,
+     *  description="Book not found",
+     *  @Model(type=ErrorResponse::class)
+     * )
+     */
+    #[Route('/books/{id}', name: 'book_show', methods: ['GET'])]
+    public function getById(int $id)
+    {
+        return $this->json($this->bookService->getBookById($id));
     }
 }

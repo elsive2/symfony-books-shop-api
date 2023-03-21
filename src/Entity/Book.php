@@ -41,6 +41,9 @@ class Book
     #[ORM\Column(type: Types::TEXT)]
     private string $description;
 
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'book')]
+    private Collection $reviews;
+
     /**
      * @var Collection<Category>
      */
@@ -186,6 +189,27 @@ class Book
     {
         if (!$this->formats->contains($format)) {
             $this->formats->add($format);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Review[]
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @param Review $review
+     * @return self
+     */
+    public function addReview(Review $review)
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
         }
 
         return $this;
