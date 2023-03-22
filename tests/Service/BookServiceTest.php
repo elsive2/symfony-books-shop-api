@@ -11,6 +11,7 @@ use App\Repository\CategoryRepository;
 use App\Service\BookService;
 use App\Entity\Category;
 use App\Repository\ReviewRepository;
+use App\Service\RatingService;
 use App\Tests\AbstractTestCase;
 
 class BookServiceTest extends AbstractTestCase
@@ -26,10 +27,11 @@ class BookServiceTest extends AbstractTestCase
             ->willReturn(false);
 
         $reviewRepository = $this->createMock(ReviewRepository::class);
+        $ratingService = $this->createMock(RatingService::class);
 
         $this->expectException(CategoryNotFoundException::class);
 
-        (new BookService($categoryRepository, $bookRepository, $reviewRepository))
+        (new BookService($categoryRepository, $bookRepository, $reviewRepository, $ratingService))
             ->getBooksByCategoryId(130); 
     }
 
@@ -48,8 +50,9 @@ class BookServiceTest extends AbstractTestCase
             ->willReturn(true);
 
         $reviewRepository = $this->createMock(ReviewRepository::class);
+        $ratingService = $this->createMock(RatingService::class);
 
-        $service = new BookService($categoryRepository, $bookRepository, $reviewRepository);
+        $service = new BookService($categoryRepository, $bookRepository, $reviewRepository, $ratingService);
         $actual = $service->getBooksByCategoryId(130);
         $expected = new BookListResponse([$this->createBookItemModel()]);
 

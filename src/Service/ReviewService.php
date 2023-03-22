@@ -15,7 +15,8 @@ class ReviewService
     
     public function __construct(
         private ReviewRepository $reviewRepository,
-        private BookRepository $bookRepository
+        private BookRepository $bookRepository,
+        private RatingService $ratingService
     ) { }
 
     public function getReviewPageByBookId(int $id, int $page): ReviewPage
@@ -27,9 +28,10 @@ class ReviewService
         $offset = max($page - 1, 0) * self::PAGE_LIMIT;
         $paginator = $this->reviewRepository->getPageByBookId($id, $offset, self::PAGE_LIMIT);
         $total = count($paginator);
+        $rating = $this->ratingService->calulateRatingForBook($id. $total);
 
         return (new ReviewPage)
-            ->setRating($this->reviewRepository->getBookTotalRatingSum($id))
+            ->setRating($rating)
             ->setTotal($total)
             ->setPage($page)
             ->setPerPage(self::PAGE_LIMIT)
