@@ -21,17 +21,10 @@ use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerInterface;
 
 class BookService
-{    
-    /**
-     * __construct
-     *
-     * @param CategoryRepository
-     * @param BookRepository
-     */
+{
     public function __construct(
         private CategoryRepository $categoryRepository,
         private BookRepository $bookRepository,
-        private ReviewRepository $reviewRepository,
         private RatingService $ratingService,
         private RecommendationService $recommendationService,
         private LoggerInterface $logger
@@ -52,8 +45,7 @@ class BookService
     public function getBookById(int $id): BookDetails
     {
         $book = $this->bookRepository->getById($id);
-        $reviews = $this->reviewRepository->countByBookId($id);
-        $rating = $this->ratingService->calulateRatingForBook($id, $reviews);
+        $rating = $this->ratingService->calulateRatingForBook($id);
         $formats = $this->mapFormats($book->getFormats());
         $recommendations = [];
 
@@ -76,9 +68,9 @@ class BookService
         }
 
         return BookMapper::map($book, new BookDetails)
-            ->setRating($rating)
+            ->setRating($rating->getRating())
             ->setRecommendations($recommendations)
-            ->setReviews($reviews)
+            ->setReviews($rating->getTotal())
             ->setFormats($formats)
             ->setCategories($categories->toArray());
     }

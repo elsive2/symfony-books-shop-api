@@ -28,10 +28,10 @@ class ReviewService
         $offset = max($page - 1, 0) * self::PAGE_LIMIT;
         $paginator = $this->reviewRepository->getPageByBookId($id, $offset, self::PAGE_LIMIT);
         $total = count($paginator);
-        $rating = $this->ratingService->calulateRatingForBook($id, $total);
+        $rating = $this->ratingService->calulateRatingForBook($id);
 
         return (new ReviewPage)
-            ->setRating($rating)
+            ->setRating($rating->getRating())
             ->setTotal($total)
             ->setPage($page)
             ->setPerPage(self::PAGE_LIMIT)

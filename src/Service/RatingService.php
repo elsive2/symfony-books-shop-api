@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Rating;
 use App\Repository\ReviewRepository;
 
 class RatingService
@@ -10,8 +11,11 @@ class RatingService
         private ReviewRepository $reviewRepository
     ) { }
 
-    public function calulateRatingForBook(int $id, int $total): float
+    public function calulateRatingForBook(int $id): Rating
     {
-        return $total > 0 ? $this->reviewRepository->getBookTotalRatingSum($id) / $total : 0; 
+        $total = $this->reviewRepository->countByBookId($id);
+        $rating = $total > 0 ? $this->reviewRepository->getBookTotalRatingSum($id) / $total : 0; 
+    
+        return new Rating($total, $rating);
     }
 }
