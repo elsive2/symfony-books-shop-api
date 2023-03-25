@@ -42,21 +42,23 @@ class RequestBodyArgumentResolver implements ValueResolverInterface
 	 */
 	public function resolve(Request $request, ArgumentMetadata $argument): iterable 
     {
-        try {
-            $model = $this->serializer->deserialize(
-                $request->getContent(), 
-                $argument->getType(), 
-                JsonEncoder::FORMAT
-            );
-        } catch (Throwable $throwable) {
-            throw new RequestBodyConvertException($throwable);
+        if ($request->getContent()) {
+            try {
+                $model = $this->serializer->deserialize(
+                    $request->getContent(), 
+                    $argument->getType(), 
+                    JsonEncoder::FORMAT
+                );
+            } catch (Throwable $throwable) {
+                throw new RequestBodyConvertException($throwable);
+            }
+    
+            $errors = $this->validator->validate($model);
+            if (count($errors) > 0) {
+                throw new ValidationException($errors);
+            }
+    
+            yield $model;
         }
-
-        $errors = $this->validator->validate($model);
-        if (count($errors) > 0) {
-            throw new ValidationException($errors);
-        }
-
-        yield $model;
 	}
 }
