@@ -9,22 +9,21 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
-        login:
-            pattern: ^/api/v1/auth/signIn
-            stateless: true
-            json_login:
-                check_path: /api/v1/auth/signIn
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        
-        api:
-            pattern:   ^/api
+
+        login:
+            pattern: ^/api
             stateless: true
+            entry_point: jwt
+            json_login:
+                check_path: api_login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: ~
+            refresh_jwt:
+                check_path: api_refresh_token
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

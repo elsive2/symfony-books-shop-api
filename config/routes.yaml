@@ -6,3 +6,8 @@ controllers:
 
 api_login_check:
     path: /api/v1/auth/signIn
+
+api_refresh_token:
+    path: /api/v1/auth/token/refresh
+
+    
