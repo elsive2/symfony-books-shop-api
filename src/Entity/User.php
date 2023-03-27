@@ -11,6 +11,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_EDITOR = 'ROLE_EDITOR';
+    const ROLE_ADMINISTRATOR = 'ROLE_ADMINISTRATOR';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -26,7 +26,8 @@ class AuthService
         $user = (new User)
             ->setEmail($request->getEmail())
             ->setFirstName($request->getFirstName())
-            ->setLastName($request->getLastName());
+            ->setLastName($request->getLastName())
+            ->setRoles([User::ROLE_USER]);
 
         $user->setPassword($this->hasher->hashPassword($user, $request->getPassword()));
 
