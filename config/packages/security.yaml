@@ -1,8 +1,8 @@
 security:
 
     role_hierarchy:
-        ROLE_EDITOR: ROLE_USER
-        ROLE_ADMIN: ROLE_EDITOR
+        ROLE_AUTHOR: ROLE_USER
+        ROLE_ADMIN: ROLE_AUTHOR
 
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
@@ -14,10 +14,6 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         login:
             pattern: ^/api
             stateless: true
@@ -30,6 +26,9 @@ security:
             refresh_jwt:
                 check_path: api_refresh_token
 
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -39,6 +38,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/api/v1/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/v1/author, roles: ROLE_AUTHOR }
         - { path: ^/api/v1/user, roles: ROLE_USER }
         - { path: ^/api, roles: PUBLIC_ACCESS }
 

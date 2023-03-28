@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Exception\UserNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -59,5 +60,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function existsByEmail(string $email): bool
     {
         return null !== $this->findOneBy(['email' => $email]);
+    }
+
+    public function getUser(int $id): User
+    {
+        $user = $this->find($id);
+        
+        if (null === $user) {
+            throw new UserNotFoundException;
+        }
+
+        return $user;
     }
 }
